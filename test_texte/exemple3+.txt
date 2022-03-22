@@ -1,0 +1,19 @@
+OK
+OK
+OK
+OK
+COMPLET
+Pommes 3	;
+COMPLET
+Pommes 2	;
+OK
+Fraises 3	Pommes 2	;
+COMPLET
+Fraises 2	Pommes 2	;
+Pommes 2	;
+COMPLET
+Fraises 1	Pommes 1	;
+Pommes 2	;
+MANQUE Fraises 1	 ;
+;
+Pommes 1	;

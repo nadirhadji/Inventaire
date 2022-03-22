@@ -1,0 +1,27 @@
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+OK
+452m  Provigo
+865m  IGA
+865m  IGA
+1154m  Foudici IGA
+1287m  Métro Provigo
+2260m  IGA Foudici Provigo Métro
+1265m  Métro
+644m  Foudici
+IMPOSSIBLE
+COMPLET
+MANQUE Pommes 1	 ;
+Fraises 5	Lait 5	Pain 5	;
+;
+OK
+;
+;
+;
+;

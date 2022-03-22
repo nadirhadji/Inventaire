@@ -1,0 +1,15 @@
+OK
+OK
+OK
+OK
+OK
+COMPLET
+Fraises 2	Pommes 1	;
+Pommes 4	;
+COMPLET
+Fraises 1	Pommes 1	;
+Pommes 3	;
+865m  IGA
+0m IMPOSSIBLE
+0m IMPOSSIBLE
+1154m  Foudici IGA

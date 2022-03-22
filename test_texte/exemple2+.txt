@@ -1,0 +1,20 @@
+OK
+OK
+OK
+OK
+Fraises 10	;
+OK
+Fraises 8	;
+OK
+Fraises 5	;
+OK
+Fraises 4	;
+OK
+OK
+;
+OK
+Fraises 4	;
+OK
+;
+OK
+;

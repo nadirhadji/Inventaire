@@ -1,0 +1,12 @@
+OK
+OK
+OK
+Pommes 12	;
+COMPLET
+Pommes 11	;
+OK
+Pommes 9	;
+OK
+Pommes 6	;
+OK
+;

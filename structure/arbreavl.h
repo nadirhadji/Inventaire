@@ -285,12 +285,11 @@ void ArbreAVL<T>::vider(){
 template <class T>
 void ArbreAVL<T>::vider(Noeud*& noeud)
 {
-    if ( noeud->gauche != nullptr )
+    if (noeud != nullptr) {
         vider(noeud->gauche);
-    else if ( noeud->droite != nullptr )
         vider(noeud->droite);
-    else 
         delete noeud;
+    }
 }
 
 //DONE
@@ -573,7 +572,7 @@ const T& ArbreAVL<T>::Iterateur::operator *() const
 
 template <class T>
 typename ArbreAVL<T>::Iterateur& ArbreAVL<T>::Iterateur::operator = (const Iterateur& autre){
-    assert(&arbre_associe==&autre.arbre_associe);
+    assert( &arbre_associe == &autre.arbre_associe );
     courant = autre.courant;
     chemin = autre.chemin;
     return *this;

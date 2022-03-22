@@ -1,4 +1,8 @@
-#include "operation.h"
+#include "gestionnaire.h"
+
+//Public 
+// Operation::Operation() {}
+// Operation::~Operation() {}
 
 //Private
 void Operation::recommander(istream& entree) {
@@ -48,14 +52,21 @@ void Operation::approvisionner(istream& entree) {
     cout << "OK";
 }
 
+//DONE
 void Operation::placer(istream& entree) {
     PointST position;
     string nom;
     char pointvirgule=0;
     entree >> nom >> position >> pointvirgule;
     assert(pointvirgule==';');
-    // TODO
-    cout << "OK";
+    if ( ! map_epiceries.contient(nom) ) 
+    { 
+        map_epiceries[nom] = position;
+        cout << "OK" << endl;
+    } 
+    else {
+        cout << "Epicerie : " << nom << " deja presente au : " << map_epiceries[nom] << " ." << endl;
+    }
 }
 
 void Operation::inventaire(istream& entree) {
@@ -67,18 +78,21 @@ void Operation::inventaire(istream& entree) {
     cout << "?";
 }
 
+//DONE
 void Operation::date(istream& entree) {
+    std::cout << "Date courrante : " << date_courante << std::endl;
     char pointvirgule=0;
     Date temp_date;
     entree >> temp_date >> pointvirgule;
     assert(pointvirgule==';');
-    //Valider Date 
-    date_courante = temp_date;
-    cout << "OK";
+    if ( temp_date.est_valide(date_courante) ){
+        date_courante = temp_date;
+        cout << "OK";
+    }
+    std::cout << "Date apres modification : " << date_courante << std::endl;
 }
 
 //Private
-
 int Operation::exectuer(istream& entree) {
     while(entree){
 
@@ -96,11 +110,12 @@ int Operation::exectuer(istream& entree) {
             placer(entree);
         else if(typecommande=="INVENTAIRE")
             inventaire(entree);
-        else if(typecommande=="DATE")
+        else if(typecommande=="DATE") //DONE
             date(entree);
         else {
             cout << "Commande '" << typecommande << "' invalide!" << endl;
             return 2;
         }
     }
+    return 0;
 }

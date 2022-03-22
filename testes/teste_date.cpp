@@ -3,7 +3,7 @@
     Automne 2017 | TP2
     http://ericbeaudry.ca/INF3105/tp2/
 */
-#include "date.h"
+#include "../entite/date/date.h"
 #include <sstream>
 #include <vector> // std::vecteur est permis uniquement pour ce programme test.
 

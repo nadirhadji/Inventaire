@@ -1,14 +1,20 @@
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <cassert>
-#include "date.h"
-#include "pointst.h"
-#include "epicerie.h"
+#include "../entite/date/date.h"
+#include "../entite/point/pointst.h"
+#include "../epicerie.h"
+#include "../structure/arbremap.h"
 using namespace std;
 
 class Operation
 {
     private:
+
+        Date date_courante;
+        ArbreMap<string,PointST> map_epiceries;
+
         /**
          * @brief 
          * 
@@ -149,8 +155,5 @@ class Operation
         void date(istream& entree);
 
     public:
-        Operation() {}
-        ~Operation() {}
         int exectuer(istream& entree);
-        Date date_courante;
 };

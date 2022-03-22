@@ -12,6 +12,7 @@
 #define _ARBREMAP___H_
 
 #include "arbreavl.h"
+using namespace std;
 
 template <class K, class V>
 class ArbreMap
@@ -23,13 +24,18 @@ class ArbreMap
             K cle;
             V valeur;
             bool operator < (const Entree& e) const { return cle < e.cle; }
+            bool operator > (const Entree& e) const { return cle > e.cle; }
     };
 
-    ArbreAVL<Entree> entrees;
+    ArbreAVL<Entree> *entrees;
 
   public:
 
+    ArbreMap();
+    ArbreMap(const ArbreMap<K,V>&);
+    ~ArbreMap();
     bool contient(const K&) const;
+    void inserer(const K&, const V&);
     void enlever(const K&);
     void vider();
     bool vide() const;
@@ -38,17 +44,46 @@ class ArbreMap
 };
 
 template <class K, class V>
+ArbreMap<K,V>::ArbreMap() {
+    entrees = new ArbreAVL<Entree>();
+}
+
+template <class K, class V>
+ArbreMap<K,V>::ArbreMap(const ArbreMap<K,V>& autre) {
+    if (entrees == nullptr)
+        entrees = new ArbreAVL<Entree>(autre);
+    else if (entrees != autre.entrees) {
+        entrees->vider();
+        delete entrees;
+        entrees = new ArbreAVL<Entree>(autre);
+    }
+}
+
+template <class K, class V>
+ArbreMap<K,V>::~ArbreMap() {
+    cout << "Supression de la Map" << endl;
+    delete entrees;
+    entrees = nullptr;
+}
+
+template <class K, class V>
 void ArbreMap<K,V>::vider(){
-    if ( entrees.racine != nullptr)
-        entrees.vider();
+    if ( ! entrees->vide() )
+        entrees->vider();
 }
 
 template <class K, class V>
 bool ArbreMap<K,V>::vide() const{
-    if ( entrees.racine != nullptr)
-        return entrees.vide();
-    else
-        return false;
+    return entrees->vide();
+}
+
+template <class K, class V>
+void ArbreMap<K,V>::inserer(const K& cle, const V& valeur) {
+    if (entrees != nullptr) {
+        Entree e(cle);
+        e.valeur = valeur;
+        entrees->inserer(e);
+    }
 }
 
 template <class K, class V>
@@ -61,26 +96,26 @@ template <class K, class V>
 bool ArbreMap<K,V>::contient(const K& c) const
 {
     if ( entrees != nullptr)
-        return entrees.contient(c);
+        return entrees->contient(c);
     return false;
 }
 
 template <class K, class V>
 const V& ArbreMap<K,V>::operator[] (const K& c)  const
 {
-    typename ArbreAVL<Entree>::Iterateur iter=entrees.rechercher(c);
-    return entrees[iter].valeur;
+    typename ArbreAVL<Entree>::Iterateur iter = entrees->rechercher(c);
+    return (*entrees)[iter].valeur;
 }
 
 template <class K, class V>
 V& ArbreMap<K,V>::operator[] (const K& c) 
 {
-    typename ArbreAVL<Entree>::Iterateur iter=entrees.rechercher(Entree(c));
+    typename ArbreAVL<Entree>::Iterateur iter = entrees->rechercher(Entree(c));
     if(!iter) {
-        entrees.inserer(Entree(c));
-        iter = entrees.rechercher(c);
+        entrees->inserer(Entree(c));
+        iter = entrees->rechercher(c);
     }
-    return entrees[iter].valeur;
+    return (*entrees)[iter].valeur;
 }
 
 #endif

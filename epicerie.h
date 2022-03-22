@@ -6,7 +6,7 @@
 #define _EPICERIE__H_
 
 #include <string>
-#include "arbremap.h"
+#include "./structure/arbremap.h"
 
 using namespace std;
 
@@ -15,7 +15,7 @@ class Commande{
     // À compléter
   private:
     // À compléter
-    friend istream& operator>>(istream& is, Commande& c);
+    friend istream& operator >> (istream& is, Commande& c);
 };
 
 class Epicerie{

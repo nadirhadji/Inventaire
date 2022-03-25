@@ -20,6 +20,11 @@ PointST::PointST(double latitude_, double longitude_)
 {
 }
 
+void PointST::operator = (const PointST& autre) {
+    longitude = autre.longitude;
+    latitude = autre.latitude;
+}
+
 double PointST::distance(const PointST& point) const {
   double s1 = sin((point.latitude-latitude)/2);
   double s2 = sin((point.longitude-longitude)/2);

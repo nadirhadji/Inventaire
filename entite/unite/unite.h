@@ -1,17 +1,24 @@
+#if !defined(_UNITE__H_)
+#define _UNITE__H_
+
 #include <string.h>
 #include "../date/date.h"
 using namespace std;
 
 class Unite
-{
-private:
-    string nom;
-    Date date_expiration;
+{       
+    private:
+        string nom_produit;
+        Date date_expiration;
 
-public:
-    Unite(/* args */);
-    ~Unite();
-    bool operator == (const Unite& u) const;
-};
+    public:
+        Unite(string&,Date&);
+        // ~Unite();
+        bool operator == (const Unite& u) const;
+        bool operator < (const Unite& u) const;
+        bool operator > (const Unite& u) const;
+        string nom();
+        Date date();
+    };
 
-
+#endif

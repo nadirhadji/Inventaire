@@ -5,7 +5,6 @@
 
     AUTEUR(S):
      1) Nadir Hadji - HADN08069703
-
 */
 #include <fstream>
 #include <iostream>
@@ -14,7 +13,6 @@
 #include <cmath>
 #include <limits>
 #include "entite/date/date.h"
-#include "epicerie.h"
 #include "entite/point/pointst.h"
 #include "gestionnaire/gestionnaire.h"
 using namespace std;
@@ -102,8 +100,9 @@ using namespace std;
 // }
 
 int tp(istream& entree) {
-    Operation handler;
-    return handler.exectuer(entree);
+    Gestionnaire *handler = new Gestionnaire();
+    return handler->exectuer(entree);
+    delete handler;
 }
 
 // syntaxe d'appel : ./tp2 [nomfichier.txt]

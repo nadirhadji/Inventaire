@@ -15,8 +15,8 @@ class PointST {
     PointST(){}
     PointST(double latitude_, double longitude_);
     PointST(const PointST&);
-
     double distance(const PointST&) const;
+    void operator = (const PointST&);
 
   private:
     double latitude;

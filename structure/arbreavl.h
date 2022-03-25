@@ -303,16 +303,15 @@ void ArbreAVL<T>::copier(const Noeud* source, Noeud*& noeud) const
 
         if (source->gauche != nullptr) 
         {
-            delete noeud->gauche;
-            noeud->gauche = new Noeud();
             copier(source->gauche,noeud->gauche);
+            noeud = new Noeud(source->contenu);
         }
 
         if (source->droite != nullptr) 
         {
-            delete noeud->droite;
-            noeud->droite = new Noeud();
+            
             copier(source->droite,noeud->droite);
+            noeud = new Noeud(source->contenu);
         }
     }
 }
@@ -415,7 +414,7 @@ template <class T>
 typename ArbreAVL<T>::Iterateur ArbreAVL<T>::rechercher(const T& e) const
 {
     Iterateur iter(*this);
-    Noeud *n = racine;
+    Noeud *n = racine; 
 
     while(n) {
         if ( n->contenu > e ) {

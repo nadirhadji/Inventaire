@@ -1,11 +1,19 @@
 #include "gestionnaire.h"
+#include "../commande.h"
 
 //Public 
-// Operation::Operation() {}
-// Operation::~Operation() {}
+Gestionnaire::Gestionnaire() {
+    inventaire_globale = new Inventaire();
+    cout << "Constructeur Gestionnaire" << endl;
+}
+
+Gestionnaire::~Gestionnaire() {
+    delete inventaire_globale;
+    inventaire_globale = nullptr;
+}
 
 //Private
-void Operation::recommander(istream& entree) {
+void Gestionnaire::recommander(istream& entree) {
     PointST p;
     int nbMaxEpiceries=0;
     double maxdistance=0;
@@ -21,7 +29,7 @@ void Operation::recommander(istream& entree) {
     cout << "IMPOSSIBLE";
 }
 
-void Operation::ramasser(istream& entree) {
+void Gestionnaire::ramasser(istream& entree) {
     Commande c;
     entree >> c;
     string nomepicerie;
@@ -34,42 +42,36 @@ void Operation::ramasser(istream& entree) {
     cout << "COMPLET";
 }
 
-void Operation::approvisionner(istream& entree) {
+void Gestionnaire::approvisionner(istream& entree) {
     string nomepicerie;
     char deuxpoints=0;
     entree >> nomepicerie >> deuxpoints;
     assert(deuxpoints==':');
     string nomproduit;
     entree >> nomproduit;
-    while(entree && nomproduit!=";"){
+    while(entree && nomproduit!=";") {
         int quantite;
         Date dateexpiration;
         entree >> quantite >> dateexpiration;
-        // À compléter
+        Unite unite(nomproduit,dateexpiration);
+        cout << "Pre appel approvisionner" << endl;
+        inventaire_globale->inserer_produit(unite,nomepicerie,quantite);
         entree >> nomproduit;
     }
-    // À compléter
-    cout << "OK";
 }
 
 //DONE
-void Operation::placer(istream& entree) {
+void Gestionnaire::placer(istream& entree) {
     PointST position;
     string nom;
     char pointvirgule=0;
     entree >> nom >> position >> pointvirgule;
     assert(pointvirgule==';');
-    if ( ! map_epiceries.contient(nom) ) 
-    { 
-        map_epiceries[nom] = position;
-        cout << "OK" << endl;
-    } 
-    else {
-        cout << "Epicerie : " << nom << " deja presente au : " << map_epiceries[nom] << " ." << endl;
-    }
+    Magasin m = Magasin(nom,position);
+    inventaire_globale->inserer_magasin(m);
 }
 
-void Operation::inventaire(istream& entree) {
+void Gestionnaire::inventaire(istream& entree) {
     string nomepicerie;
     char pointvirgule=0;
     entree >> nomepicerie>> pointvirgule;
@@ -79,21 +81,17 @@ void Operation::inventaire(istream& entree) {
 }
 
 //DONE
-void Operation::date(istream& entree) {
-    std::cout << "Date courrante : " << date_courante << std::endl;
+void Gestionnaire::date(istream& entree) {
     char pointvirgule=0;
     Date temp_date;
     entree >> temp_date >> pointvirgule;
     assert(pointvirgule==';');
-    if ( temp_date.est_valide(date_courante) ){
-        date_courante = temp_date;
-        cout << "OK";
-    }
-    std::cout << "Date apres modification : " << date_courante << std::endl;
+    if ( date_courante.modifier(temp_date) )
+        cout << "OK" << endl;
 }
 
 //Private
-int Operation::exectuer(istream& entree) {
+int Gestionnaire::exectuer(istream& entree) {
     while(entree){
 
         string typecommande;
@@ -112,6 +110,8 @@ int Operation::exectuer(istream& entree) {
             inventaire(entree);
         else if(typecommande=="DATE") //DONE
             date(entree);
+        else if(typecommande == "END")
+            return 0;
         else {
             cout << "Commande '" << typecommande << "' invalide!" << endl;
             return 2;

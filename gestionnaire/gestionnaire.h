@@ -1,20 +1,31 @@
+/*  AUTEUR(S):
+    1) Nadir HAdji - HADN08069703
+*/
+
+#if !defined(__GESTIONNAIRE_H__)
+#define __GESTIONNAIRE_H__
+
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <cassert>
 #include "../entite/date/date.h"
 #include "../entite/point/pointst.h"
-#include "../epicerie.h"
-#include "../structure/arbremap.h"
+#include "../service/inventaire/inventaire.h"
+#include "../commande.h"
 using namespace std;
 
-class Operation
-{
+class Gestionnaire
+{   
+    public:
+        Gestionnaire();
+        ~Gestionnaire();
+        int exectuer(istream& entree);
+
     private:
-
+        Inventaire *inventaire_globale;
         Date date_courante;
-        ArbreMap<string,PointST> map_epiceries;
-
+   
         /**
          * @brief 
          * 
@@ -153,7 +164,6 @@ class Operation
         void placer(istream& entree);
         void inventaire(istream& entree);
         void date(istream& entree);
-
-    public:
-        int exectuer(istream& entree);
 };
+
+#endif

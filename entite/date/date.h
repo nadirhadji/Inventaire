@@ -29,8 +29,9 @@ class Date{
   public:
     Date();
     Date(int,int,int);
-    void modifier_date(int annee, int mois, int jour);
-    bool est_valide(const Date& date);
+    bool modifier(const Date&);
+    bool est_modifiable_par(const Date& date);
+    bool operator == (const Date& date) const;
     bool operator < (const Date& date) const;
 
   private:

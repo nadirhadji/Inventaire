@@ -1,11 +1,6 @@
-/*  AUTEUR(S):
-    1) Nom + Code permanent du l'étudiant.e 1
-    2) Nom + Code permanent du l'étudiant.e 2
-*/
-#include <iostream>
-#include "epicerie.h"
+#include "commande.h"
 
-istream& operator >> (istream& is, Commande& c){
+std::istream& operator >> (istream& is, Commande& c){
     string nomproduit;
     is >> nomproduit;
     while(is && nomproduit!=";"){

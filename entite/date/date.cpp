@@ -7,15 +7,20 @@
 #include <cstdio>
 #include <iomanip>
 #include <assert.h>
+using namespace std;
 
 Date::Date() : annee(2000), mois(0), jour(1) {}
 Date::Date(int a, int m, int j) : annee(a), mois(m), jour(j) {};
 
-void Date::modifier_date(int a, int m, int j) 
+bool Date::modifier(const Date& autre) 
 {
-    annee = a;
-    mois = m;
-    jour = j;
+    if ( (*this).est_modifiable_par(autre) ) {
+        annee = autre.annee;
+        mois = autre.mois;
+        jour = autre.jour;
+        return true;
+    } 
+    return false;
 }
 
 bool Date::operator < (const Date& autre) const
@@ -24,19 +29,25 @@ bool Date::operator < (const Date& autre) const
     return difference < 0;
 }
 
-bool Date::est_valide(const Date& date_courrante) {
+bool Date::operator == (const Date& autre) const {
+    return  annee == autre.annee && 
+            mois == autre.mois &&
+            jour == autre.jour;
+}
+
+bool Date::est_modifiable_par(const Date& autre) {
     Date debut;
-    if (! est_coherente(*this) )
+    if (! est_coherente(autre) )
     {
         ERREUR_DATE_INCOHERENTE();
         return false;
     }
-    else if ( (*this) < debut) 
+    else if ( autre < debut ) 
     {
         ERREUR_DATE_MINIMUM();
         return false;
     }
-    else if ((*this) < date_courrante) {
+    else if ( autre < *(this)) {
         ERREUR_DATE_ANTERIEUR();
         return false;
     }
@@ -102,7 +113,6 @@ std::istream& operator >> (std::istream& is, Date& d){
     is >> a >> t1 >> m >> t2 >> j;
     assert(t1=='-');
     assert(t2=='-');
-    d.modifier_date(a,m,j);
+    d.modifier(Date(a,m,j));
     return is;
 }
-

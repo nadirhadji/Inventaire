@@ -9,7 +9,8 @@
 #include "../../structure/arbreavl.h"
 #include "../../structure/arbremap.h"
 #include "../../entite/unite/unite.h"
-#include "../../entite/quantite/quantite.h"
+#include "../../entite/magasin/magasin.h"
+
 using namespace std;
 
 #define ERREUR_MAGASIN_NULL(nom) \
@@ -22,14 +23,11 @@ using namespace std;
 class Inventaire
 {
     private:
-        ArbreAVL<Magasin> *arbre_magasin;
-        ArbreMap< Unite , ArbreAVL<Quantite> > *map_inventaire;
+        ArbreAVL<Magasin> arbre_magasin;
+        ArbreMap< Unite , ArbreMap<Magasin,int> > map_inventaire;
         Magasin obtenir_magasin(string nom_magasin);
     
     public:
-        Inventaire();
-        ~Inventaire();
-        void vider();
         void inserer_magasin(Magasin&);
         void inserer_produit(Unite unite,string nom_magasin, int nb_unite);
 };

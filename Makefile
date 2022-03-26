@@ -6,7 +6,7 @@ OPTIONS = -g -O0 -Wall
 CC = g++
 #OPTIONS = -O2 -Wall
 
-OBJECTS_ENTITE = date.o magasin.o pointst.o quantite.o unite.o commande.o
+OBJECTS_ENTITE = date.o magasin.o pointst.o unite.o commande.o
 OBJECTS_SERVICE = gestionnaire.o inventaire.o
 OBJECTS = $(OBJECTS_ENTITE) $(OBJECTS_SERVICE)
 
@@ -27,20 +27,10 @@ arbreavl.h = $(path_structure)/arbreavl.h
 arbremap.h =  $(path_structure)/arbremap.h
 pile.h =  $(path_structure)/pile.h
 
-#Chemins -> service gestionnaire 
-path_gestionnaire = ./gestionnaire
-
 #Chemins -> service inventaire 
 path_service = ./service
 path_inventaire =  $(path_service)/inventaire
-
-#Chemins -> Repertores des entites
-path_entite = ./entite
-path_date = $(path_entite)/date
-path_point = $(path_entite)/point
-path_magasin = $(path_entite)/magasin
-path_unite = $(path_entite)/unite
-path_quantite = $(path_entite)/quantite
+path_gestionnaire =  $(path_service)/gestionnaire
 
 inventaire.h = $(path_inventaire)/inventaire.h
 inventaire.cpp = $(path_inventaire)/inventaire.cpp
@@ -49,6 +39,14 @@ inventaire.o = $(path_objects_folder)/inventaire.o
 gestionnaire.h = $(path_gestionnaire)/gestionnaire.h
 gestionnaire.cpp = $(path_gestionnaire)/gestionnaire.cpp
 gestionnaire.o = $(path_objects_folder)/gestionnaire.o
+
+
+#Chemins -> Repertores des entites
+path_entite = ./entite
+path_date = $(path_entite)/date
+path_point = $(path_entite)/point
+path_magasin = $(path_entite)/magasin
+path_unite = $(path_entite)/unite
 
 date.cpp = $(path_date)/date.cpp
 date.h = $(path_date)/date.h
@@ -65,10 +63,6 @@ magasin.cpp = $(path_magasin)/magasin.cpp
 unite.o = $(path_objects_folder)/unite.o
 unite.h = $(path_unite)/unite.h
 unite.cpp = $(path_unite)/unite.cpp
-
-quantite.o = $(path_objects_folder)/quantite.o
-quantite.h = $(path_quantite)/quantite.h
-quantite.cpp = $(path_quantite)/quantite.cpp
 
 commande.o = $(path_objects_folder)/commande.o
 commande.cpp = commande.cpp
@@ -96,7 +90,7 @@ magasin.o : $(magasin.cpp) $(magasin.h)
 date.o : $(date.cpp) $(date.h)
 	$(CC) ${OPTIONS} -c -o $(date.o) $<
 
-inventaire.o : $(inventaire.cpp) $(inventaire.h) $(quantite.o) $(unite.o) $(magasin.o) $(arbreavl.h)
+inventaire.o : $(inventaire.cpp) $(inventaire.h) $(unite.o) $(magasin.o) $(arbreavl.h)
 	$(CC) ${OPTIONS} -c -o $(inventaire.o) $<
 
 commande.o : $(commande.cpp) $(commande.h)
@@ -104,9 +98,6 @@ commande.o : $(commande.cpp) $(commande.h)
 
 unite.o : $(unite.cpp) $(unite.h)
 	$(CC) ${OPTIONS} -c -o $(unite.o) $<
-
-quantite.o : $(quantite.cpp) $(quantite.h)
-	$(CC) ${OPTIONS} -c -o $(quantite.o) $<
 
 testDATE : $(test_date) $(date.o)
 	$(CC) $(OPTIONS) -o testDATE $^

@@ -14,7 +14,7 @@
 #include <limits>
 #include "entite/date/date.h"
 #include "entite/point/pointst.h"
-#include "gestionnaire/gestionnaire.h"
+#include "service/gestionnaire/gestionnaire.h"
 using namespace std;
 
 // int tp2(istream& entree){

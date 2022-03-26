@@ -1,5 +1,5 @@
 #include "gestionnaire.h"
-#include "../commande.h"
+#include "../../commande.h"
 
 //Public 
 Gestionnaire::Gestionnaire() {
@@ -49,7 +49,7 @@ void Gestionnaire::approvisionner(istream& entree) {
     assert(deuxpoints==':');
     string nomproduit;
     entree >> nomproduit;
-    while(entree && nomproduit!=";") {
+    while(entree && nomproduit != ";") {
         int quantite;
         Date dateexpiration;
         entree >> quantite >> dateexpiration;

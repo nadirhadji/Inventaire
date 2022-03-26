@@ -285,9 +285,11 @@ void ArbreAVL<T>::vider(){
 template <class T>
 void ArbreAVL<T>::vider(Noeud*& noeud)
 {
-    if (noeud != nullptr) {
-        vider(noeud->gauche);
-        vider(noeud->droite);
+    if (noeud != nullptr ) {
+        if (noeud->gauche != nullptr)
+            vider(noeud->gauche);
+        else if (noeud->droite != nullptr)
+            vider(noeud->droite);
         delete noeud;
     }
 }
@@ -296,23 +298,20 @@ void ArbreAVL<T>::vider(Noeud*& noeud)
 template <class T>
 void ArbreAVL<T>::copier(const Noeud* source, Noeud*& noeud) const
 {
-    if (source != nullptr && source != noeud) 
-    {
-        noeud->contenu = source->contenu;
-        noeud->equilibre = source->equilibre;
+    if (source != NULL) {
+        //left side
+        Noeud * source_gauche = source->gauche;
+        Noeud * nouveau_gauche = new Noeud(source_gauche->contenu);
+        nouveau_gauche->equilibre = source_gauche->equilibre;
+        noeud->gauche = nouveau_gauche;
+        copier(source->gauche, noeud->gauche);
 
-        if (source->gauche != nullptr) 
-        {
-            copier(source->gauche,noeud->gauche);
-            noeud = new Noeud(source->contenu);
-        }
-
-        if (source->droite != nullptr) 
-        {
-            
-            copier(source->droite,noeud->droite);
-            noeud = new Noeud(source->contenu);
-        }
+        //right side
+        Noeud * source_droite = source->droite;
+        Noeud * nouveau_droite = new Noeud(source_droite->contenu);
+        nouveau_droite->equilibre = source_droite->equilibre;
+        noeud->droite = nouveau_droite;
+        copier(source->droite, noeud->droite);
     }
 }
 
@@ -417,7 +416,7 @@ typename ArbreAVL<T>::Iterateur ArbreAVL<T>::rechercher(const T& e) const
     Noeud *n = racine; 
 
     while(n) {
-        if ( n->contenu > e ) {
+        if ( e < n->contenu ) {
             iter.chemin.empiler(n);
             n = n->gauche;
         }
@@ -490,7 +489,7 @@ T& ArbreAVL<T>::operator[](const Iterateur& iterateur)
 }
 
 template <class T>
-ArbreAVL<T>& ArbreAVL<T>::operator=(const ArbreAVL& autre) {
+ArbreAVL<T>& ArbreAVL<T>::operator = (const ArbreAVL& autre) {
     if(this==&autre) return *this;
     vider();
     copier(autre.racine, racine);

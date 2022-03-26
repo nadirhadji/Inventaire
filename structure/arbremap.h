@@ -3,7 +3,6 @@
     Automne 2017 | Lab8 + TP2
     http://ericbeaudry.uqam.ca/INF3105/lab8/
     http://ericbeaudry.uqam.ca/INF3105/tp2/
-
     AUTEUR(S):
      (1) Nadir Hadji - HADN080697
 */
@@ -26,13 +25,10 @@ class ArbreMap
             bool operator > (const Entree& e) const { return cle > e.cle; }
     };
 
-    ArbreAVL<Entree> *entrees;
+    ArbreAVL<Entree> entrees;
 
     public:
 
-        ArbreMap();
-        ArbreMap(const ArbreMap<K,V>&);
-        ~ArbreMap();
         bool contient(const K&) const;
         void inserer(const K&, const V&);
         void enlever(const K&);
@@ -52,6 +48,7 @@ class ArbreMap
 
         V& operator[](const Iterateur& iter);
         const V& operator[](const Iterateur& iter) const ;
+
     public: 
 
         class Iterateur
@@ -59,10 +56,10 @@ class ArbreMap
             public:
                 Iterateur(ArbreMap& a) : iter(a.entrees.debut()) {}
                 Iterateur(typename ArbreAVL<Entree>::Iterateur i) : iter(i){}
-                operator bool() const; 
-                Iterateur& operator++();
-                const K& cle() const;
-                V& valeur();
+                operator bool() const { return iter.operator bool(); }
+                Iterateur& operator++() { ++iter; return *this; }
+                const K& cle() const { return (*iter).cle; }
+                const V& valeur() { return (V&) (*iter).valeur; }
 
             private:
                 typename ArbreAVL<Entree>::Iterateur iter;
@@ -70,80 +67,28 @@ class ArbreMap
 };
 
 template <class K, class V>
-ArbreMap<K,V>::ArbreMap() {
-    entrees = new ArbreAVL<Entree>();
-}
-
-template <class K, class V>
-ArbreMap<K,V>::ArbreMap(const ArbreMap<K,V>& autre) {
-    if (entrees == nullptr)
-        entrees = new ArbreAVL<Entree>(autre);
-    else if (entrees != autre.entrees) {
-        entrees->vider();
-        delete entrees;
-        entrees = new ArbreAVL<Entree>(autre);
-    }  
-}
-
-template <class K, class V>
-ArbreMap<K,V>::~ArbreMap() {
-    cout << "Supression de la Map" << endl;
-    typename ArbreAVL<Entree>::Iterateur iter = entrees->debut();
-    while(iter) {
-
-    }
-
-    delete entrees;
-    entrees = nullptr;
-}
-
-template <class K, class V>
-void ArbreMap<K,V>::vider(){
-    if ( ! entrees->vide() )
-        entrees->vider();
-}
-
-template <class K, class V>
-bool ArbreMap<K,V>::vide() const{
-    return entrees->vide();
-}
-
-template <class K, class V>
-void ArbreMap<K,V>::inserer(const K& cle, const V& valeur) {
-    if (entrees != nullptr) {
-        Entree e(cle);
-        e.valeur = valeur;
-        entrees->inserer(e);
-    }
-}
-
-template <class K, class V>
-void ArbreMap<K,V>::enlever(const K& cle)
-{
-    if ( entrees->contient(cle) ) {
-        typename ArbreAVL<Entree>::Iterateur iter = entrees->rechercher(cle);
-        delete (*entrees)[iter];
-    }
-}
-
-template <class K, class V>
 bool ArbreMap<K,V>::contient(const K& c) const
 {
-    return entrees->contient(Entree(c));
+    return entrees.contient(Entree(c));
 }
 
+//Utiliser seulement lorsque l'element existe sinon crash
 template <class K, class V>
 const V& ArbreMap<K,V>::operator[] (const K& c)  const
 {
     typename ArbreAVL<Entree>::Iterateur iter = entrees->rechercher(c);
-    return (*entrees)[iter].valeur;
+    return entrees[iter].valeur;
 }
 
 template <class K, class V>
 V& ArbreMap<K,V>::operator[] (const K& c) 
 {
-    typename ArbreAVL<Entree>::Iterateur iter = entrees->rechercher(c);
-    return (*entrees)[iter].valeur;
+    typename ArbreAVL<Entree>::Iterateur iter = entrees.rechercher(c);
+    if (!iter) {
+        entrees.inserer(Entree(c));
+        iter = entrees.rechercher(Entree(c));
+    }
+    return entrees[iter].valeur;
 }
 
 template <class K, class V>
@@ -171,47 +116,23 @@ typename ArbreMap<K,V>::Iterateur ArbreMap<K,V>::fin()
 }
 
 template <class K, class V>
-typename ArbreMap<K,V>::Iterateur ArbreMap<K,V>::rechercher(const K& cle) 
+typename ArbreMap<K,V>::Iterateur ArbreMap<K,V>::rechercher(const K& c) 
 { 
-    return Iterateur(entrees->rechercher(cle));
+    return Iterateur(entrees.rechercher(c));
 }
 
 template <class K, class V>
-typename ArbreMap<K,V>::Iterateur ArbreMap<K,V>::rechercherEgalOuSuivant(const K& cle) 
+typename ArbreMap<K,V>::Iterateur ArbreMap<K,V>::rechercherEgalOuSuivant(const K& c) 
 {
-    return Iterateur(entrees->rechercherEgalOuSuivant(cle));
+    return Iterateur(entrees->rechercherEgalOuSuivant(c));
 }
 
 template <class K, class V>
-typename ArbreMap<K,V>::Iterateur ArbreMap<K,V>::rechercherEgalOuPrecedent(const K& cle) 
+typename ArbreMap<K,V>::Iterateur ArbreMap<K,V>::rechercherEgalOuPrecedent(const K& c) 
 {
-    return Iterateur(entrees->rechercherEgalOuPrecedent(cle));
+    return Iterateur(entrees->rechercherEgalOuPrecedent(c));
 }
 
 //---------------IMPLEMENTATION ITERATEUR -----------------------
-
-template <class K, class V>
-ArbreMap<K,V>::Iterateur::operator bool() const 
-{
-    return iter.operator bool();
-}
-
-template <class K, class V>
-typename ArbreMap<K,V>::Iterateur& ArbreMap<K,V>::Iterateur::operator++() 
-{
-    ++iter; 
-    return *this;
-}
-
-template <class K, class V>
-const K& ArbreMap<K,V>::Iterateur::cle() const 
-{
-    return (*iter).cle;
-}
-
-template <class K, class V>
-V& ArbreMap<K,V>::Iterateur::valeur() {
-    return (V&) (*iter).valeur;
-}
 
 #endif

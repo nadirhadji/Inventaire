@@ -18,7 +18,6 @@ public:
     Magasin(const Magasin& autre);
     Magasin(string&);
     ~Magasin();
-    void operator = (const Magasin*);
     void operator = (const Magasin&);
     bool operator == (const Magasin&) const;
     bool operator < (const Magasin&) const;

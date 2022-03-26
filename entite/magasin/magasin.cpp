@@ -1,4 +1,5 @@
 #include "magasin.h"
+
 Magasin::Magasin() {
     cout << "Constructeur default magasin" << endl;
 }
@@ -22,11 +23,6 @@ Magasin::~Magasin()
 {
     nom_magasin.clear();
 }
-
-void Magasin::operator = (const Magasin* autre) {
-    nom_magasin = autre->nom_magasin;
-    position_magasin = autre->position_magasin;
-}   
 
 void Magasin::operator = (const Magasin& autre) {
     cout << "je suis ici" << endl;

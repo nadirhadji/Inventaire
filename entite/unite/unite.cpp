@@ -45,6 +45,11 @@ bool Unite::operator > (const Unite& autre) const {
         return nom_produit < autre.nom_produit;
 }
 
+void Unite::operator = (const Unite& u) {
+    nom_produit = u.nom_produit;
+    date_expiration = u.date_expiration;
+}
+
 string Unite::nom() {
     return nom_produit;
 }

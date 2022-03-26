@@ -35,6 +35,12 @@ bool Date::operator == (const Date& autre) const {
             jour == autre.jour;
 }
 
+void Date::operator = (const Date& autre) {
+    annee = autre.annee;
+    mois = autre.mois;
+    jour = autre.jour;
+}
+
 bool Date::est_modifiable_par(const Date& autre) {
     Date debut;
     if (! est_coherente(autre) )

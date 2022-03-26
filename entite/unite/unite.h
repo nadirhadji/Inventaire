@@ -17,6 +17,7 @@ class Unite
         bool operator == (const Unite& u) const;
         bool operator < (const Unite& u) const;
         bool operator > (const Unite& u) const;
+        void operator = (const Unite& u);
         string nom();
         Date date();
     };

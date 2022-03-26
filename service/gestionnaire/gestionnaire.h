@@ -9,10 +9,10 @@
 #include <iostream>
 #include <string>
 #include <cassert>
-#include "../entite/date/date.h"
-#include "../entite/point/pointst.h"
-#include "../service/inventaire/inventaire.h"
-#include "../commande.h"
+#include "../../entite/date/date.h"
+#include "../../entite/point/pointst.h"
+#include "../inventaire/inventaire.h"
+#include "../../commande.h"
 using namespace std;
 
 class Gestionnaire
@@ -25,7 +25,7 @@ class Gestionnaire
     private:
         Inventaire *inventaire_globale;
         Date date_courante;
-   
+        
         /**
          * @brief 
          * 

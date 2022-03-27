@@ -25,7 +25,7 @@ class ArbreAVL {
     void vider();
     void enlever(const T&); // non requis pour le TP2.
     int  hauteur() const;
-    void print();
+    void afficher() const;
 
     // Annonce l'existance d'une classe Iterateur.
     class Iterateur;
@@ -57,13 +57,16 @@ class ArbreAVL {
     // Fonctions internes.
     bool inserer(Noeud*&, const T&);
     bool contient(Noeud*, const T&) const;
-    void print(Noeud*,int);
+    //void print(Noeud*,int);
     void rotationGaucheDroite(Noeud*&);
     void rotationDroiteGauche(Noeud*&);
     void vider(Noeud*&);
     void copier(const Noeud*, Noeud*&) const;
     const T& max(Noeud*) const;
     bool enlever(Noeud*&, const T& e);
+    void preparerafficher(const Noeud* , int , int& , T* , int* ) const;
+    int taille() const;
+    int compter(Noeud * n) const;
 
   public:
     // Sera présenté à la semaine #7
@@ -107,9 +110,13 @@ ArbreAVL<T>::ArbreAVL() : racine(NULL)
 }
 
 template <class T>
-ArbreAVL<T>::ArbreAVL(const ArbreAVL<T>& autre) : racine(NULL)
+ArbreAVL<T>::ArbreAVL(const ArbreAVL<T>& autre) : racine(nullptr)
 {
-    copier(autre.racine, racine);
+    if (autre.racine != nullptr) {
+        racine = new Noeud(autre.racine->contenu);
+        racine->equilibre = autre.racine->equilibre;
+        copier(autre.racine, racine);
+    }
 }
 
 template <class T>
@@ -241,32 +248,68 @@ void ArbreAVL<T>::rotationDroiteGauche(Noeud*& racinesousarbre)
 }
 
 template <class T>
-void ArbreAVL<T>::print() {
-    print(racine,10);
+void ArbreAVL<T>::afficher() const{
+    std::cout << "Contenu de l'arbre (";
+    int n = taille();
+    std::cout << n << " noeuds)\n";
+    T* elements = new T[n];
+    int* profondeurs = new int[n];
+    n=0;
+    preparerafficher(racine, 0, n, elements, profondeurs);
+    for(int p=0;;p++){
+        bool derniereprofondeur = true;
+        for(int i=0;i<n;i++){
+            if(profondeurs[i]==p){
+                std::cout << elements[i];
+                derniereprofondeur = false;
+            }
+            std::cout << '\t';
+        }
+        std::cout << '\n';
+        if(derniereprofondeur) break;
+    }
+    delete[] profondeurs;
+    delete[] elements;
+    std::cout << "-------------" << std::endl;
 }
 
 template <class T>
-void ArbreAVL<T>::print(Noeud *n, int space) {
-    // Base case
-    if (n == NULL)
-        return;
- 
-    // Increase distance between levels
-    space += 10;
- 
-    // Process right child first
-    print(n->droite, space);
- 
-    // Print current node after space
-    // count
-    std::cout << std::endl;
-    for (int i = 10; i < space; i++)
-        std::cout<<" ";
-    std::cout << n->contenu << "\n";
- 
-    // Process left child
-    print(n->gauche, space);
+void ArbreAVL<T>::preparerafficher(const Noeud* n, int profondeur, int& rang, T* elements, int* profondeurs) const{
+    if(n==nullptr) return;
+    preparerafficher(n->gauche, profondeur+1, rang, elements, profondeurs);
+    elements[rang] = n->contenu;
+    profondeurs[rang] = profondeur;
+    rang++;
+    preparerafficher(n->droite, profondeur+1, rang, elements, profondeurs);
 }
+
+// template <class T>
+// void ArbreAVL<T>::print() {
+//     print(racine,10);
+// }
+
+// template <class T>
+// void ArbreAVL<T>::print(Noeud *n, int space) {
+//     // Base case
+//     if (n == NULL)
+//         return;
+ 
+//     // Increase distance between levels
+//     space += 10;
+ 
+//     // Process right child first
+//     print(n->droite, space);
+ 
+//     // Print current node after space
+//     // count
+//     std::cout << std::endl;
+//     for (int i = 10; i < space; i++)
+//         std::cout<<" ";
+//     std::cout << n->contenu << "\n";
+ 
+//     // Process left child
+//     print(n->gauche, space);
+// }
 
 //DONE
 template <class T>
@@ -286,10 +329,8 @@ template <class T>
 void ArbreAVL<T>::vider(Noeud*& noeud)
 {
     if (noeud != nullptr ) {
-        if (noeud->gauche != nullptr)
-            vider(noeud->gauche);
-        else if (noeud->droite != nullptr)
-            vider(noeud->droite);
+        vider(noeud->gauche);
+        vider(noeud->droite);
         delete noeud;
     }
 }
@@ -298,22 +339,26 @@ void ArbreAVL<T>::vider(Noeud*& noeud)
 template <class T>
 void ArbreAVL<T>::copier(const Noeud* source, Noeud*& noeud) const
 {
-    if (source != NULL) {
+    if (source->gauche != NULL) {
         //left side
         Noeud * source_gauche = source->gauche;
         Noeud * nouveau_gauche = new Noeud(source_gauche->contenu);
         nouveau_gauche->equilibre = source_gauche->equilibre;
         noeud->gauche = nouveau_gauche;
+        //delete nouveau_gauche;
         copier(source->gauche, noeud->gauche);
+    }
 
+    if (source->droite != NULL) {
         //right side
         Noeud * source_droite = source->droite;
         Noeud * nouveau_droite = new Noeud(source_droite->contenu);
         nouveau_droite->equilibre = source_droite->equilibre;
         noeud->droite = nouveau_droite;
+        //delete nouveau_droite;
         copier(source->droite, noeud->droite);
-    }
-}
+   }
+} 
 
 //DONE
 template <class T>
@@ -331,6 +376,17 @@ int  ArbreAVL<T>::hauteur() const {
         ++h;
     } while (temp != NULL);
     return h;
+}
+
+template <class T>
+int ArbreAVL<T>::taille() const {
+    return compter(racine);
+}
+
+template <class T>
+int ArbreAVL<T>::compter(Noeud *n) const{
+    if(n == nullptr) return 0;
+    return 1 + compter(n->gauche) + compter(n->droite);
 }
 
 //DONE
@@ -359,14 +415,29 @@ bool ArbreAVL<T>::enlever(Noeud*& noeud, const T& element)
     {
         if(enlever(noeud->gauche, element))
         {
-            // ...
+            noeud->equilibre--;
+            if ( noeud->equilibre < -1 ) {
+                if( noeud->gauche->equilibre > 1){
+                    rotationGaucheDroite(noeud->gauche);
+                }
+                rotationDroiteGauche(noeud);     
+            }
+            return true;
         }
     }
     else if(element > noeud->contenu)
     {
         if (enlever(noeud->droite, element))
         {
-            
+            noeud->equilibre++;
+            if (noeud->equilibre > 1 ) {
+                if (noeud->droite != nullptr) {
+                    if ( noeud->droite->equilibre < 0) 
+                        rotationDroiteGauche(noeud->droite);
+                }
+                rotationGaucheDroite(noeud);                
+            }
+            return true;
         }
     }
     else if(element == noeud->contenu)
@@ -379,7 +450,16 @@ bool ArbreAVL<T>::enlever(Noeud*& noeud, const T& element)
         }
         else
         {
-            // ...
+            if (noeud->gauche==NULL || noeud->droite==NULL) {
+                Noeud *temp = noeud->gauche ? noeud->gauche : noeud->droite;
+                noeud = temp;
+                delete temp; 
+            } else {
+                ArbreAVL<T>::Iterateur it = ArbreAVL<T>::Iterateur((*this),noeud);
+                ++it;
+                noeud->contenu = (it.courant)->contenu;
+                enlever( noeud->droite , (it.courant)->contenu);
+            }
             return true;
         }
     }
@@ -509,6 +589,17 @@ ArbreAVL<T>::Iterateur::Iterateur(const ArbreAVL<T>::Iterateur& a)
 {
     courant = a.courant;
     chemin = a.chemin;
+}
+
+template <class T>
+ArbreAVL<T>::Iterateur::Iterateur(const ArbreAVL& a, Noeud* c)
+: arbre_associe(a) {
+    //assert(a != nullptr);
+    ArbreAVL<T>::Iterateur it = a.rechercher(c->contenu);
+    if (it.courant != nullptr) {
+        courant = c;
+        chemin = it.chemin;
+    }
 }
 
 // Pré-incrément

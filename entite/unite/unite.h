@@ -13,13 +13,15 @@ class Unite
 
     public:
         Unite(string&,Date&);
+        Unite(string&);
         // ~Unite();
         bool operator == (const Unite& u) const;
         bool operator < (const Unite& u) const;
         bool operator > (const Unite& u) const;
         void operator = (const Unite& u);
-        string nom();
-        Date date();
-    };
+        bool egale_nom(const string&) const;
+    
+    friend class Inventaire;
+};
 
 #endif

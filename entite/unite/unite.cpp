@@ -6,6 +6,10 @@ Unite::Unite(string& nom, Date& date)
     date_expiration = date;
 }
 
+Unite::Unite(string& nom) {
+    nom_produit = nom;
+}
+
 // Unite::~Unite()
 // {
 //     nom_produit.clear();
@@ -50,10 +54,6 @@ void Unite::operator = (const Unite& u) {
     date_expiration = u.date_expiration;
 }
 
-string Unite::nom() {
-    return nom_produit;
-}
-
-Date Unite::date() {
-    return date_expiration;
+bool Unite::egale_nom(const string& autre_nom) const {
+    return nom_produit == autre_nom;
 }

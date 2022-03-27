@@ -101,15 +101,12 @@ unite.o : $(unite.cpp) $(unite.h)
 
 testDATE : $(test_date) $(date.o)
 	$(CC) $(OPTIONS) -o testDATE $^
-	mv ./testDATE $(path_exec_folder)
 
 testAVL : $(test_avl) $(arbreavl.h)
 	$(CC) $(OPTIONS) -o testAVL $<
-	mv ./testAVL $(path_exec_folder)
 
 testMAP : $(test_map) $(arbreavl.h) $(arbremap.h)
 	$(CC) $(OPTIONS) -o testMAP $<
-	mv ./testMAP $(path_exec_folder)
 
 clean:
 	rm -rf tp2 *~ *.o

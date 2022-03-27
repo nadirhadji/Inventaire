@@ -1,15 +1,35 @@
 #include "gestionnaire.h"
 #include "../../commande.h"
 
-//Public 
-Gestionnaire::Gestionnaire() {
-    inventaire_globale = new Inventaire();
-    cout << "Constructeur Gestionnaire" << endl;
-}
+//Public
+int Gestionnaire::exectuer(istream& entree) {
+    while(entree){
 
-Gestionnaire::~Gestionnaire() {
-    delete inventaire_globale;
-    inventaire_globale = nullptr;
+        string typecommande;
+        entree >> typecommande;
+        if(!entree) break; // détection fin ==> sortie
+
+        if (typecommande=="RECOMMANDER")
+            recommander(entree);
+        else if (typecommande=="RAMASSER")
+            ramasser(entree);
+        else if(typecommande=="APPROV")
+            approvisionner(entree);
+        else if(typecommande=="PLACER")
+            placer(entree);
+        else if(typecommande=="INVENTAIRE")
+            inventaire(entree);
+        else if(typecommande=="DATE") //DONE
+            date(entree);
+        else if(typecommande == "END")
+            return 0;
+        else {
+            cout << "Commande '" << typecommande << "' invalide!" << endl;
+            return 2;
+        }
+    }
+    inventaire_globale.vider();
+    return 0;
 }
 
 //Private
@@ -53,9 +73,13 @@ void Gestionnaire::approvisionner(istream& entree) {
         int quantite;
         Date dateexpiration;
         entree >> quantite >> dateexpiration;
-        Unite unite(nomproduit,dateexpiration);
         cout << "Pre appel approvisionner" << endl;
-        inventaire_globale->inserer_produit(unite,nomepicerie,quantite);
+        inventaire_globale.inserer_produit (
+            nomproduit,
+            dateexpiration,
+            nomepicerie,
+            quantite
+        );
         entree >> nomproduit;
     }
 }
@@ -67,17 +91,15 @@ void Gestionnaire::placer(istream& entree) {
     char pointvirgule=0;
     entree >> nom >> position >> pointvirgule;
     assert(pointvirgule==';');
-    Magasin m = Magasin(nom,position);
-    inventaire_globale->inserer_magasin(m);
+    inventaire_globale.inserer_magasin(nom,position);
 }
 
 void Gestionnaire::inventaire(istream& entree) {
     string nomepicerie;
     char pointvirgule=0;
-    entree >> nomepicerie>> pointvirgule;
+    entree >> nomepicerie >> pointvirgule;
     assert(pointvirgule==';');
-    // TODO
-    cout << "?";
+    inventaire_globale.afficher_inventaire(nomepicerie);
 }
 
 //DONE
@@ -86,36 +108,10 @@ void Gestionnaire::date(istream& entree) {
     Date temp_date;
     entree >> temp_date >> pointvirgule;
     assert(pointvirgule==';');
-    if ( date_courante.modifier(temp_date) )
+    cout << "Ancienne date : " << date_courante << endl;
+    if ( date_courante.modifier(temp_date) ) {
+        cout << "Nouvelle date " << date_courante << endl;
+        inventaire_globale.nettoyer_inventaire(temp_date);
         cout << "OK" << endl;
-}
-
-//Private
-int Gestionnaire::exectuer(istream& entree) {
-    while(entree){
-
-        string typecommande;
-        entree >> typecommande;
-        if(!entree) break; // détection fin ==> sortie
-
-        if (typecommande=="RECOMMANDER")
-            recommander(entree);
-        else if (typecommande=="RAMASSER")
-            ramasser(entree);
-        else if(typecommande=="APPROV")
-            approvisionner(entree);
-        else if(typecommande=="PLACER")
-            placer(entree);
-        else if(typecommande=="INVENTAIRE")
-            inventaire(entree);
-        else if(typecommande=="DATE") //DONE
-            date(entree);
-        else if(typecommande == "END")
-            return 0;
-        else {
-            cout << "Commande '" << typecommande << "' invalide!" << endl;
-            return 2;
-        }
     }
-    return 0;
 }

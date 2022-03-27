@@ -30,8 +30,6 @@ class ArbreMap
     public:
 
         bool contient(const K&) const;
-        void inserer(const K&, const V&);
-        void enlever(const K&);
         void vider();
         bool vide() const;
 
@@ -72,11 +70,23 @@ bool ArbreMap<K,V>::contient(const K& c) const
     return entrees.contient(Entree(c));
 }
 
+template <class K, class V>
+void ArbreMap<K,V>::vider() {
+    if(! entrees.vide())
+        entrees.vider();
+}
+
+template <class K, class V>
+bool ArbreMap<K,V>::vide() const {
+    //assert(entrees);
+    return entrees.vide();
+}
+
 //Utiliser seulement lorsque l'element existe sinon crash
 template <class K, class V>
 const V& ArbreMap<K,V>::operator[] (const K& c)  const
 {
-    typename ArbreAVL<Entree>::Iterateur iter = entrees->rechercher(c);
+    typename ArbreAVL<Entree>::Iterateur iter = entrees.rechercher(c);
     return entrees[iter].valeur;
 }
 
@@ -85,7 +95,7 @@ V& ArbreMap<K,V>::operator[] (const K& c)
 {
     typename ArbreAVL<Entree>::Iterateur iter = entrees.rechercher(c);
     if (!iter) {
-        entrees.inserer(Entree(c));
+        entrees.inserer(c);
         iter = entrees.rechercher(Entree(c));
     }
     return entrees[iter].valeur;

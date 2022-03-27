@@ -18,14 +18,22 @@ using namespace std;
 class Gestionnaire
 {   
     public:
-        Gestionnaire();
-        ~Gestionnaire();
         int exectuer(istream& entree);
 
     private:
-        Inventaire *inventaire_globale;
+        Inventaire inventaire_globale;
         Date date_courante;
-        
+
+        void recommander(istream& entree);
+        void ramasser(istream& entree);
+        void approvisionner(istream& entree);
+        void placer(istream& entree);
+        void inventaire(istream& entree);
+        void date(istream& entree);
+};
+
+#endif
+
         /**
          * @brief 
          * 
@@ -158,12 +166,3 @@ class Gestionnaire
          *      
          * @param entree 
          */
-        void recommander(istream& entree);
-        void ramasser(istream& entree);
-        void approvisionner(istream& entree);
-        void placer(istream& entree);
-        void inventaire(istream& entree);
-        void date(istream& entree);
-};
-
-#endif

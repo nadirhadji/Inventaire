@@ -33,6 +33,7 @@ class Date{
     bool est_modifiable_par(const Date& date);
     bool operator == (const Date& date) const;
     bool operator < (const Date& date) const;
+    bool operator <= (const Date& date) const;
     void operator = (const Date& date);
 
   private:

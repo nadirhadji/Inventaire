@@ -29,6 +29,11 @@ bool Date::operator < (const Date& autre) const
     return difference < 0;
 }
 
+bool Date::operator <= (const Date& autre) const {
+    int difference = difference_entre_dates(autre);
+    return difference <= 0;
+}
+
 bool Date::operator == (const Date& autre) const {
     return  annee == autre.annee && 
             mois == autre.mois &&

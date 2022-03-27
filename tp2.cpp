@@ -100,9 +100,8 @@ using namespace std;
 // }
 
 int tp(istream& entree) {
-    Gestionnaire *handler = new Gestionnaire();
-    return handler->exectuer(entree);
-    delete handler;
+    Gestionnaire handler;
+    return handler.exectuer(entree);
 }
 
 // syntaxe d'appel : ./tp2 [nomfichier.txt]

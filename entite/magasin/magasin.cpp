@@ -1,51 +1,46 @@
 #include "magasin.h"
 
 Magasin::Magasin() {
-    cout << "Constructeur default magasin" << endl;
+    nom = "null";
 }
 
 Magasin::Magasin(const Magasin& autre) {
-    nom_magasin = autre.nom_magasin;
-    position_magasin = autre.position_magasin;
+    nom = autre.nom;
+    position = autre.position;
 }
 
-Magasin::Magasin( const string& str,  const PointST& p) {
-    nom_magasin = str;
-    position_magasin = p; 
+Magasin::Magasin(string& str,PointST& p) {
+    nom = str;
+    position = p; 
 }
 
-Magasin::Magasin(string& nom)
+Magasin::Magasin(const string& n)
 {
-    nom_magasin = nom;
+    nom = n;
 }
 
 Magasin::~Magasin()
 {
-    nom_magasin.clear();
+    nom.clear();
 }
 
-void Magasin::operator = (const Magasin& autre) {
-    cout << "je suis ici" << endl;
-    nom_magasin = autre.nom_magasin;
-    position_magasin = autre.position_magasin;
+void Magasin::operator = ( const Magasin& autre) 
+{
+    nom = autre.nom;
+    position = autre.position;
 }
 
-bool Magasin::operator == (const Magasin& autre) const {
-    return nom_magasin == autre.nom_magasin;
+bool Magasin::operator == ( const Magasin& autre) const
+{
+    return nom == autre.nom;
 }
 
-bool Magasin::operator < (const Magasin& autre) const {
-    return nom_magasin < autre.nom_magasin;
+bool Magasin::operator < ( const Magasin& autre) const
+{
+    return nom < autre.nom;
 }   
 
-bool Magasin::operator > (const Magasin& autre) const {
-    return nom_magasin > autre.nom_magasin;
-}
-
-const string& Magasin::nom() const {
-    return nom_magasin;
-}
-
-const PointST& Magasin::position() const {
-    return position_magasin;
+bool Magasin::operator > ( const Magasin& autre) const 
+{
+    return nom > autre.nom;
 }

@@ -1,5 +1,4 @@
 #include "gestionnaire.h"
-#include "../../commande.h"
 
 //Public
 int Gestionnaire::exectuer(istream& entree) {
@@ -28,30 +27,27 @@ int Gestionnaire::exectuer(istream& entree) {
             return 2;
         }
     }
-    inventaire_globale.vider();
+    data.vider();
     return 0;
 }
 
 //Private
 void Gestionnaire::recommander(istream& entree) {
-    PointST p;
+    PointST point;
     int nbMaxEpiceries=0;
     double maxdistance=0;
-    Commande c;
+    Panier panier;
     char deuxpoints=0;
-    entree >> p >> nbMaxEpiceries >> maxdistance >> deuxpoints >> c;
+    entree >> point >> nbMaxEpiceries >> maxdistance >> deuxpoints >> panier;
     assert(deuxpoints==':');
-    // À compléter
-    // 1 - Trouver les combinaisons possibles d'epicirie 
-    //     En fonction du nb max d'epicerie et de la distance maximale
-    // 2 - Trier les combinaisons par distance - a +
-    // 3 - Pour chaque combinaison verifier le stock dispobible.
-    cout << "IMPOSSIBLE";
+    Commande commande(panier,maxdistance,nbMaxEpiceries,point);
+    Recommandation service(&data);
+    service.recommander(commande);
 }
 
 void Gestionnaire::ramasser(istream& entree) {
-    Commande c;
-    entree >> c;
+    Panier panier;
+    entree >> panier;
     string nomepicerie;
     entree >> nomepicerie;
     while(entree && nomepicerie!=";"){
@@ -62,6 +58,7 @@ void Gestionnaire::ramasser(istream& entree) {
     cout << "COMPLET";
 }
 
+//DONE
 void Gestionnaire::approvisionner(istream& entree) {
     string nomepicerie;
     char deuxpoints=0;
@@ -73,8 +70,7 @@ void Gestionnaire::approvisionner(istream& entree) {
         int quantite;
         Date dateexpiration;
         entree >> quantite >> dateexpiration;
-        cout << "Pre appel approvisionner" << endl;
-        inventaire_globale.inserer_produit (
+        data.inserer_produit (
             nomproduit,
             dateexpiration,
             nomepicerie,
@@ -91,15 +87,16 @@ void Gestionnaire::placer(istream& entree) {
     char pointvirgule=0;
     entree >> nom >> position >> pointvirgule;
     assert(pointvirgule==';');
-    inventaire_globale.inserer_magasin(nom,position);
+    data.inserer_magasin(nom,position);
 }
 
+//DONE
 void Gestionnaire::inventaire(istream& entree) {
     string nomepicerie;
     char pointvirgule=0;
     entree >> nomepicerie >> pointvirgule;
     assert(pointvirgule==';');
-    inventaire_globale.afficher_inventaire(nomepicerie);
+    data.afficher_inventaire(nomepicerie);
 }
 
 //DONE
@@ -111,7 +108,7 @@ void Gestionnaire::date(istream& entree) {
     cout << "Ancienne date : " << date_courante << endl;
     if ( date_courante.modifier(temp_date) ) {
         cout << "Nouvelle date " << date_courante << endl;
-        inventaire_globale.nettoyer_inventaire(temp_date);
+        data.nettoyer_inventaire(temp_date);
         cout << "OK" << endl;
     }
 }

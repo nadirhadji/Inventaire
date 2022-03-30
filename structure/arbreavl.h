@@ -46,11 +46,11 @@ class ArbreAVL {
 
   private:
     struct Noeud{
-        Noeud(const T&);
-        T contenu ;
+        Noeud(const T& t);
+        T contenu;
         int equilibre ;
-        Noeud *gauche ;
-        Noeud *droite ;
+        Noeud *gauche;
+        Noeud *droite;
     };
     Noeud* racine;
 
@@ -571,8 +571,11 @@ T& ArbreAVL<T>::operator[](const Iterateur& iterateur)
 template <class T>
 ArbreAVL<T>& ArbreAVL<T>::operator = (const ArbreAVL& autre) {
     if(this==&autre) return *this;
-    vider();
-    copier(autre.racine, racine);
+    if (autre.racine != nullptr) {
+        racine = new Noeud(autre.racine->contenu);
+        racine->equilibre = autre.racine->equilibre;
+        copier(autre.racine, racine);
+    }
     return *this;
 }
 

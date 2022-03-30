@@ -6,24 +6,25 @@
 #include "../point/pointst.h"
 using namespace std;
 
-class Magasin
-{
-private:
-    string nom_magasin;
-    PointST position_magasin;
+class Magasin {
+
+    public:
+        Magasin();
+        Magasin(const Magasin&);
+        Magasin(string&, PointST&);
+        Magasin(const string&);
+        ~Magasin();
+        void operator =  ( const Magasin& );
+        bool operator <  ( const Magasin& ) const;
+        bool operator >  ( const Magasin& ) const;
+        bool operator == ( const Magasin& ) const;
+
+    private:
+        string nom;
+        PointST position;   
     
-public:
-    Magasin();
-    Magasin( const string&, const PointST&);
-    Magasin(const Magasin& autre);
-    Magasin(string&);
-    ~Magasin();
-    void operator = (const Magasin&);
-    bool operator == (const Magasin&) const;
-    bool operator < (const Magasin&) const;
-    bool operator > (const Magasin&) const;
-    const string& nom() const;
-    const PointST& position() const;
+    friend class Recommandation;
+    friend class Data;
 };
 
 #endif

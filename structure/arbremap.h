@@ -10,7 +10,6 @@
 #define _ARBREMAP___H_
 
 #include "arbreavl.h"
-using namespace std;
 
 template <class K, class V>
 class ArbreMap
@@ -29,11 +28,11 @@ class ArbreMap
 
     public:
 
+        class Iterateur;
+
         bool contient(const K&) const;
         void vider();
         bool vide() const;
-
-        class Iterateur;
 
         Iterateur debut();
         Iterateur fin();
@@ -52,7 +51,8 @@ class ArbreMap
         class Iterateur
         {
             public:
-                Iterateur(ArbreMap& a) : iter(a.entrees.debut()) {}
+                Iterateur(ArbreMap<K,V>& a) : iter(a.entrees.debut()) {}
+                Iterateur(const ArbreMap<K,V>& a) : iter(a.entrees.debut()) {}
                 Iterateur(typename ArbreAVL<Entree>::Iterateur i) : iter(i){}
                 operator bool() const { return iter.operator bool(); }
                 Iterateur& operator++() { ++iter; return *this; }

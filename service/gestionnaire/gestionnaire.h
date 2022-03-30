@@ -11,19 +11,19 @@
 #include <cassert>
 #include "../../entite/date/date.h"
 #include "../../entite/point/pointst.h"
-#include "../inventaire/inventaire.h"
-#include "../../commande.h"
+#include "../../entite/commande/commande.h"
+#include "../data/data.h"
+#include "../recommandation/recommandation.h"
 using namespace std;
 
 class Gestionnaire
 {   
     public:
         int exectuer(istream& entree);
-
+ 
     private:
-        Inventaire inventaire_globale;
         Date date_courante;
-
+        Data data;
         void recommander(istream& entree);
         void ramasser(istream& entree);
         void approvisionner(istream& entree);

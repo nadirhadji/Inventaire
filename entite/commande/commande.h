@@ -15,11 +15,6 @@ class Commande
     
   public:
     Commande(Panier&,double&,int&,PointST&);
-    //void inserer(string&, int& );
-    //void vider();
-    //bool contient(string& s);
-    //bool contient(Pile<string>& pile);
-    //bool operator == (const Commande& autre) const;
   
   friend class Data;
   friend class Recommandation;

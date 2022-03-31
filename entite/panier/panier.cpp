@@ -14,9 +14,6 @@ std::istream& operator >> (istream& is, Panier& panier) {
 }
 
 //Public
-Panier::Panier(){
-    nb_produits = 0;
-}
 
 Panier::~Panier() {
     nb_produits = 0;

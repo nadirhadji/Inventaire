@@ -16,7 +16,7 @@ class Panier {
       int nb_produits;
 
   public :
-    Panier();
+    Panier() : liste() , nb_produits(0) {} ;
     ~Panier();
     Panier(const Panier&);
     bool vide();

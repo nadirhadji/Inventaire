@@ -96,7 +96,7 @@ void Data::nettoyer_inventaire(Date nouvelle_date)
     if (iter_magasins) 
     {
         IterProduits iter_produit = inventaire[iter_magasins.cle()].debut();
-        for (;iter_produit;iter_produit) 
+        for (;iter_produit;++iter_produit) 
         {
             IterDate iter_date = inventaire[iter_magasins.cle()][iter_produit.cle()].debut();
             for (;iter_date;++iter_date) 
@@ -149,11 +149,13 @@ bool Data::ramasser_commande(Panier& panier, string& magasin) {
                     }
                 }
                 else {
-                    if (complet) 
+                    if (! complet) 
                         cout << "MANQUE ";
                     cout <<  iter_panier.cle() << " " << iter_panier.valeur() << " ";
                 }
             }
         }
     }
+    if (complet)
+        cout << "COMPLET" << endl;
 }

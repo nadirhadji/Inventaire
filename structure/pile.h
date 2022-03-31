@@ -6,6 +6,8 @@
 #if !defined(__PILE__H__)
 #define __PILE__H__
 
+#include <assert.h>
+
 template <class T>
 class Pile
 {
@@ -25,7 +27,7 @@ class Pile
     int nb_cellules = 0;
 
   public:
-    Pile();
+    Pile() : nb_cellules(0) , sommet(NULL) {};
     Pile(const Pile&);
     ~Pile();
 
@@ -45,13 +47,6 @@ class Pile
 #include "pile.h"
 
 template <class T>
-Pile<T>::Pile()
-{
-    sommet = NULL;
-    nb_cellules = 0;
-}
-
-template <class T>
 Pile<T>::~Pile()
 {
     vider();
@@ -60,22 +55,26 @@ Pile<T>::~Pile()
 template <class T>
 Pile<T>::Pile(const Pile<T>& autre)
 {
-    Cellule **ps = &sommet; //pointeur vers le pointeur de sommet;
-    Cellule *iterateur = autre.sommet;
+    if (autre.sommet == nullptr)
+        return;
+    else {
+        Cellule **ps = &sommet;
+        Cellule *it = autre.sommet;
 
-    while(iterateur) {
-      *ps = new Cellule(iterateur->contenu, nullptr);
-      ps = &((*ps)->suivante);
-      iterateur = iterateur->suivante;
+        while(it) {
+            *ps = new Cellule(it->contenu,nullptr);
+            ps = &((*ps)->suivante);
+            it = it->suivante;
+        }
     }
-    nb_cellules = autre.nb_cellules;
 }
 
 template <class T>
 void Pile<T>::vider()
 {
-    while( ! vide() )
-        depiler();
+   while (sommet != nullptr) {
+       depiler();
+   }
 }
 
 template <class T>
@@ -101,28 +100,20 @@ void Pile<T>::empiler(const T& e)
 template <class T>
 T Pile<T>::depiler()
 {
-    assert(sommet != NULL);
-    Cellule c(*sommet);
-    delete sommet;
-    nb_cellules--;
-    sommet = c.suivante;
-    return c.contenu;
-}
-
-template <class T>
-void Pile<T>::depiler(T& e)
-{
-    assert(sommet!=NULL);
-    e = sommet->contenu;
-    Cellule* c = sommet;
+    assert(sommet != nullptr);
+    T element = sommet->contenu;
+    Cellule* anciensommet = sommet;
     sommet = sommet->suivante;
-    delete c;
+    delete anciensommet;
     nb_cellules--;
+    return element;
 }
 
 template <class T>
 bool Pile<T>::contient(const T& e) const {
 
+    if (sommet == nullptr)
+        return false;
     Cellule *iter = sommet;
     if (iter->contenu == e)
         return true;
@@ -140,30 +131,19 @@ bool Pile<T>::contient(const T& e) const {
 template <class T>
 const Pile<T>& Pile<T>::operator = (const Pile<T>& autre)
 {
-    if(&autre == this) 
-        return *this;
-    
-    Cellule** t = &sommet;
-    Cellule* a = autre.sommet;
-    while(a){
-        if((*t) == NULL)
-             *t = new Cellule(a->contenu, NULL);
-        else
-             (*t)->contenu = a->contenu;
-    
-        t = &((*t)->suivante);
-        a = a->suivante;
+   if(this == &autre) return *this;
+    vider();
+    if (autre.sommet != nullptr) {
+        sommet = new Cellule(autre.sommet->contenu, nullptr);
+        Cellule *cp = autre.sommet;
+        Cellule *c = sommet;
+        while(cp->suivante != nullptr) {
+            c->suivante = new Cellule(cp->contenu, nullptr);
+            c = c->suivante;
+            cp = cp->suivante;
+        }
     }
-    a = *t;
-    *t = NULL;
-    while(a!=NULL){
-        Cellule* temp = a->suivante;
-        delete a;
-        a = temp;
-    }
-
     return *this;
 }
 
 #endif
-

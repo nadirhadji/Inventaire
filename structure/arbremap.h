@@ -29,7 +29,7 @@ class ArbreMap
     public:
 
         class Iterateur;
-
+        
         bool contient(const K&) const;
         void vider();
         bool vide() const;

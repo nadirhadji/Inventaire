@@ -42,7 +42,7 @@ void Gestionnaire::recommander(istream& entree) {
     assert(deuxpoints==':');
     Commande commande(panier,maxdistance,nbMaxEpiceries,point);
     Recommandation service(&data);
-    service.recommander(commande);
+    service.chercher(commande);
 }
 
 void Gestionnaire::ramasser(istream& entree) {
@@ -51,11 +51,9 @@ void Gestionnaire::ramasser(istream& entree) {
     string nomepicerie;
     entree >> nomepicerie;
     while(entree && nomepicerie!=";"){
-        // À compléter
+        data.ramasser_commande(panier,nomepicerie);
         entree >> nomepicerie;
     }
-    // À compléter
-    cout << "COMPLET";
 }
 
 //DONE
